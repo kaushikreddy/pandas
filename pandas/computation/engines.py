@@ -15,10 +15,9 @@ class AbstractEngine(object):
         self.aligned_axes = None
         self.result_type = None
 
-    @abc.abstractmethod
     def convert(self):
         """Convert an expression for evaluation."""
-        pass
+        return com.pprint_thing(self.expr)
 
     def evaluate(self):
         if not self._is_aligned:
@@ -45,10 +44,6 @@ class NumExprEngine(AbstractEngine):
     def __init__(self, expr):
         super(NumExprEngine, self).__init__(expr)
 
-    def convert(self):
-        """Return a string of the expression"""
-        return com.pprint_thing(self.expr)
-
     def _evaluate(self, env):
         import numexpr as ne
 
@@ -67,9 +62,6 @@ class PythonEngine(AbstractEngine):
 
     def __init__(self, expr):
         super(PythonEngine, self).__init__(expr)
-
-    def convert(self):
-        pass
 
     def evaluate(self):
         return self.expr(self.expr.env)
